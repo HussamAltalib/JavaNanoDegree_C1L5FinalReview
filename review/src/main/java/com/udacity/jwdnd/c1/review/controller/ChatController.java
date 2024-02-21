@@ -1,5 +1,6 @@
 package com.udacity.jwdnd.c1.review.controller;
 
+import com.udacity.jwdnd.c1.review.mapper.MessageMapper;
 import com.udacity.jwdnd.c1.review.service.MessagService;
 import com.udacity.jwdnd.c1.review.model.ChatForm;
 import org.springframework.stereotype.Controller;
@@ -14,21 +15,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ChatController {
 
     private MessagService messageService;
+    private MessageMapper messageMapper;
 
-    public ChatController(MessagService messageService) {
+    public ChatController(MessagService messageService, MessageMapper messageMapper) {
         this.messageService = messageService;
+        this.messageMapper = messageMapper;
     }
 
     @GetMapping
     public String getChatPage(ChatForm newChatForm, Model model){
-        model.addAttribute("chatMessages", this.messageService.getChatMessages());
+        model.addAttribute("chatMessages", this.messageMapper.getAllMessages());
         return "chat";
     }
     @PostMapping
     public String postChatPage(ChatForm chatForm, Model model){
         this.messageService.addMessage(chatForm);
         chatForm.setMessageText("");
-        model.addAttribute("chatMessages", this.messageService.getChatMessages());
+        model.addAttribute("chatMessages", this.messageMapper.getAllMessages());
         return "chat";
     }
 
