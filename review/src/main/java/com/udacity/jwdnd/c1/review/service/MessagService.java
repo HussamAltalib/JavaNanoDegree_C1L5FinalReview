@@ -15,40 +15,38 @@ import java.util.List;
 
 @Service
 public class MessagService {
-    public List<ChatMessage> chatMessage;
+//    public List<ChatMessage> chatMessage;
     @Autowired
     public MessageMapper messageMapper;
-    public ChatMessage chatMessageObject;
 
 
     @PostConstruct
     public void postConstruct(){
         System.out.println("Creating MessageSerive bean");
-        this.chatMessage = new ArrayList<>();
-        this.chatMessageObject = new ChatMessage();
+//        this.chatMessage = new ArrayList<>();
     }
 
     public void addMessage(ChatForm chatForm){
-//        ChatMessage newMessage = new ChatMessage();
-//        newMessage.setUsername(chatForm.getUsername());
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        chatMessageObject.setUsername(auth.getPrincipal().toString());
+        ChatMessage newMessage = new ChatMessage();
+        newMessage.setUsername(chatForm.getUsername());
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        chatMessageObject.setUsername(auth.getPrincipal().toString());
         switch (chatForm.getMessageType()){
             case "Say":
-//                newMessage.setMessageText(chatForm.getMessageText());
-                chatMessageObject.setMessageText(chatForm.getMessageText());
+                newMessage.setMessageText(chatForm.getMessageText());
+//                chatMessageObject.setMessageText(chatForm.getMessageText());
                 break;
             case "Shout":
-//                newMessage.setMessageText(chatForm.getMessageText().toUpperCase());
-                chatMessageObject.setMessageText(chatForm.getMessageText().toUpperCase());
+                newMessage.setMessageText(chatForm.getMessageText().toUpperCase());
+//                chatMessageObject.setMessageText(chatForm.getMessageText().toUpperCase());
                 break;
             case "Whisper":
-//                newMessage.setMessageText(chatForm.getMessageText().toLowerCase());
-                chatMessageObject.setMessageText(chatForm.getMessageText().toLowerCase());
+                newMessage.setMessageText(chatForm.getMessageText().toLowerCase());
+//                chatMessageObject.setMessageText(chatForm.getMessageText().toLowerCase());
                 break;
         }
 //        chatMessage.add(newMessage);
-        messageMapper.insert(chatMessageObject);
+        messageMapper.insert(newMessage);
     }
 
     public List<ChatMessage> getChatMessages() {
